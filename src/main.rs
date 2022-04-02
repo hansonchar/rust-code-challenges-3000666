@@ -1,6 +1,9 @@
 use std::cmp::Ordering;
 
 fn median(mut a: Vec<f32>) -> Option<f32> {
+    if a.is_empty() {
+        return None;
+    }
     // https://stackoverflow.com/questions/40408293/how-do-i-sort-nan-so-that-it-is-greater-than-any-other-number-and-equal-to-an
     a.sort_by(|&x, &y| match (x.is_nan(), y.is_nan()) {
         (true, true) => Ordering::Equal,
@@ -10,17 +13,12 @@ fn median(mut a: Vec<f32>) -> Option<f32> {
     });
     let len = a.len();
     let half = len / 2;
-    if len % 2 == 1 {
-        // odd
-        Some(a[half])
-    } else if len == 0 {
-        // empty
-        None
+    let median = if len % 2 == 1 {
+        a[half]
     } else {
-        // even
-        let median = (a[half] + a[half - 1]) / 2.0;
-        Some(median)
-    }
+        (a[half] + a[half - 1]) / 2.0
+    };
+    Some(median)
 }
 
 fn main() {
