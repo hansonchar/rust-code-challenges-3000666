@@ -1,16 +1,18 @@
+use std::cmp::Eq;
 use std::collections::HashSet;
+use std::hash::Hash;
 
-fn unique(a: Vec<i32>) -> Vec<i32> {
+fn unique<T: Eq + Hash + Ord + Copy>(a: Vec<T>) -> Vec<T> {
     if a.is_empty() {
-        return vec![];
+        return a;
     }
-    let first = *a.first().unwrap();
+    let first = a.first().unwrap();
     let mut map = HashSet::from([first]);
-    let mut out = vec![first];
-    a.iter().for_each(|e| {
-        if !map.contains(e) {
-            map.insert(*e);
-            out.push(*e);
+    let mut out = vec![*first];
+    a.iter().for_each(|t| {
+        if !map.contains(t) {
+            map.insert(t);
+            out.push(*t);
         }
     });
     // Sort it only because the test cases expect so
@@ -39,10 +41,9 @@ fn main() {
     println!("unique items -> {:?}", answer)
 }
 
-
 #[test]
 fn empty_list() {
-    let input = vec![];
+    let input = Vec::<i32>::new();
     let expected_output = vec![];
     let actual_output = unique(input);
     assert_eq!(actual_output, expected_output);
@@ -64,7 +65,6 @@ fn unsorted_list() {
     assert_eq!(actual_output, expected_output);
 }
 
-
 #[test]
 fn unsorted_list_with_duplicates() {
     let input = vec![1, 5, 2, 2, 1];
@@ -76,7 +76,7 @@ fn unsorted_list_with_duplicates() {
 #[test]
 fn sorted_list_with_duplicates() {
     let mut input = vec![1, 5, 2, 2, 1];
-    input.sort_by(|x,y| x.partial_cmp(y).unwrap());
+    input.sort_by(|x, y| x.partial_cmp(y).unwrap());
     let expected_output = vec![1, 2, 5];
     let actual_output = unique(input);
     assert_eq!(actual_output, expected_output);
