@@ -1,5 +1,21 @@
+use std::collections::HashSet;
+
 fn unique(a: Vec<i32>) -> Vec<i32> {
-    todo!();
+    if a.is_empty() {
+        return vec![];
+    }
+    let first = *a.first().unwrap();
+    let mut map = HashSet::from([first]);
+    let mut out = vec![first];
+    a.iter().for_each(|e| {
+        if !map.contains(e) {
+            map.insert(*e);
+            out.push(*e);
+        }
+    });
+    // Sort it only because the test cases expect so
+    out.sort();
+    out
 }
 
 // advanced 1: use generic types
