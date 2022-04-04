@@ -1,11 +1,11 @@
-fn info(a: &T) {
-    todo!();
+fn info(a: &str) {
+    println!("{a}");
 }
 
 fn main() {
     let a = "?";
     let b = "?".to_string();
-    info(&a);
+    info(a);
     info(&b);
 
     // Advanced 1
