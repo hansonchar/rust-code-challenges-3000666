@@ -3,7 +3,6 @@ enum Pulse {
     Short,
     Long,
 }
-use Pulse::{Long, Short};
 
 /// Represents a single character
 type Letter = Vec<Pulse>;
@@ -17,47 +16,49 @@ trait MorseCode {
 
 impl MorseCode for String {
     fn to_morse_code(&self) -> Message {
-        let mut morse_code: Message = Vec::new();
-        for byte in self.bytes() {
-            match byte as char {
-                'a' | 'A' => morse_code.push(vec![Short, Long]),
-                'b' | 'B' => morse_code.push(vec![Long, Short, Short, Short]),
-                'c' | 'C' => morse_code.push(vec![Long, Short, Long, Short]),
-                'd' | 'D' => morse_code.push(vec![Long, Short, Short]),
-                'e' | 'E' => morse_code.push(vec![Short]),
-                'f' | 'F' => morse_code.push(vec![Short, Short, Long, Short]),
-                'g' | 'G' => morse_code.push(vec![Long, Long, Short]),
-                'h' | 'H' => morse_code.push(vec![Short; 4]),
-                'i' | 'I' => morse_code.push(vec![Short; 2]),
-                'j' | 'J' => morse_code.push(vec![Short, Long, Long, Long]),
-                'k' | 'K' => morse_code.push(vec![Long, Short, Long]),
-                'l' | 'L' => morse_code.push(vec![Short, Long, Short, Short]),
-                'm' | 'M' => morse_code.push(vec![Long; 2]),
-                'n' | 'N' => morse_code.push(vec![Long, Short]),
-                'o' | 'O' => morse_code.push(vec![Long; 3]),
-                'p' | 'P' => morse_code.push(vec![Short, Long, Long, Short]),
-                'q' | 'Q' => morse_code.push(vec![Long, Long, Short, Long]),
-                'r' | 'R' => morse_code.push(vec![Short, Long, Short]),
-                's' | 'S' => morse_code.push(vec![Short; 3]),
-                't' | 'T' => morse_code.push(vec![Long]),
-                'u' | 'U' => morse_code.push(vec![Short, Short, Long]),
-                'v' | 'V' => morse_code.push(vec![Short, Short, Short, Long]),
-                'w' | 'W' => morse_code.push(vec![Short, Long, Long]),
-                'x' | 'X' => morse_code.push(vec![Long, Short, Short, Long]),
-                'y' | 'Y' => morse_code.push(vec![Long, Short, Long, Long]),
-                'z' | 'Z' => morse_code.push(vec![Long, Long, Short, Short]),
-                '0' => morse_code.push(vec![Long; 5]),
-                '1' => morse_code.push(vec![Short, Long, Long, Long, Long]),
-                '2' => morse_code.push(vec![Short, Short, Long, Long, Long]),
-                '3' => morse_code.push(vec![Short, Short, Short, Long, Long]),
-                '4' => morse_code.push(vec![Short, Short, Short, Short, Long]),
-                '5' => morse_code.push(vec![Short; 5]),
-                '6' => morse_code.push(vec![Long, Short, Short, Short, Short]),
-                '7' => morse_code.push(vec![Long, Long, Short, Short, Short]),
-                '8' => morse_code.push(vec![Long, Long, Long, Short, Short]),
-                '9' => morse_code.push(vec![Long, Long, Long, Long, Short]),
+        use Pulse::{Long, Short};
+        let mut morse_code: Message = Vec::with_capacity(self.len());
+        for c in self.chars() {
+            let pulse = match c {
+                'a' | 'A' => vec![Short, Long],
+                'b' | 'B' => vec![Long, Short, Short, Short],
+                'c' | 'C' => vec![Long, Short, Long, Short],
+                'd' | 'D' => vec![Long, Short, Short],
+                'e' | 'E' => vec![Short],
+                'f' | 'F' => vec![Short, Short, Long, Short],
+                'g' | 'G' => vec![Long, Long, Short],
+                'h' | 'H' => vec![Short; 4],
+                'i' | 'I' => vec![Short; 2],
+                'j' | 'J' => vec![Short, Long, Long, Long],
+                'k' | 'K' => vec![Long, Short, Long],
+                'l' | 'L' => vec![Short, Long, Short, Short],
+                'm' | 'M' => vec![Long; 2],
+                'n' | 'N' => vec![Long, Short],
+                'o' | 'O' => vec![Long; 3],
+                'p' | 'P' => vec![Short, Long, Long, Short],
+                'q' | 'Q' => vec![Long, Long, Short, Long],
+                'r' | 'R' => vec![Short, Long, Short],
+                's' | 'S' => vec![Short; 3],
+                't' | 'T' => vec![Long],
+                'u' | 'U' => vec![Short, Short, Long],
+                'v' | 'V' => vec![Short, Short, Short, Long],
+                'w' | 'W' => vec![Short, Long, Long],
+                'x' | 'X' => vec![Long, Short, Short, Long],
+                'y' | 'Y' => vec![Long, Short, Long, Long],
+                'z' | 'Z' => vec![Long, Long, Short, Short],
+                '0' => vec![Long; 5],
+                '1' => vec![Short, Long, Long, Long, Long],
+                '2' => vec![Short, Short, Long, Long, Long],
+                '3' => vec![Short, Short, Short, Long, Long],
+                '4' => vec![Short, Short, Short, Short, Long],
+                '5' => vec![Short; 5],
+                '6' => vec![Long, Short, Short, Short, Short],
+                '7' => vec![Long, Long, Short, Short, Short],
+                '8' => vec![Long, Long, Long, Short, Short],
+                '9' => vec![Long, Long, Long, Long, Short],
                 _ => continue,
-            }
+            };
+            morse_code.push(pulse);
         }
         morse_code
     }
