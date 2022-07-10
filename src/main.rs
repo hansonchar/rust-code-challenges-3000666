@@ -1,5 +1,4 @@
-
-use chrono::{Local, TimeZone, Date};
+use chrono::{Date, Local, TimeZone};
 
 struct ImportantEvent {
     #[allow(dead_code)]
@@ -22,7 +21,7 @@ fn main() {
         what: String::from("Christmas"),
         when: Local.ymd(2020, 12, 25),
     };
-    
+
     if missed_christmas.is_passed() {
         println!("oh well, maybe next year");
     } else {
@@ -45,7 +44,7 @@ fn in_past() {
 #[test]
 fn in_future() {
     use chrono::Duration;
-    
+
     let event = ImportantEvent {
         what: String::from("friend's birthday"),
         when: Local::today() + Duration::hours(25),
@@ -53,4 +52,3 @@ fn in_future() {
 
     assert!(!event.is_passed())
 }
-
