@@ -17,13 +17,12 @@ impl FromStr for Isbn {
     type Err = IsbnError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let base = 48;
         let digits: Vec<u8> = s
-            .as_bytes()
-            .iter()
+            .chars()
             .filter(|c| c.is_ascii_digit())
-            .map(|c| *c - base)
+            .map(|c| c.to_digit(10).unwrap() as u8)
             .collect();
+
         match digits.len().cmp(&13) {
             Ordering::Less => return Err(IsbnError::TooShort),
             Ordering::Greater => return Err(IsbnError::TooLong),
