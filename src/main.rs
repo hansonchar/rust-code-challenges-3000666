@@ -1,15 +1,44 @@
-use std::str::FromStr;
+use std::{cmp::Ordering, str::FromStr};
 
+#[allow(dead_code)]
 struct Isbn {
     raw: String,
     digits: Vec<u8>,
 }
 
+#[derive(Debug)]
+enum IsbnError {
+    TooLong,
+    TooShort,
+    InvalidCheckDigit,
+}
+
 impl FromStr for Isbn {
-    type Err = (); // TODO: replace with appropriate type
+    type Err = IsbnError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        todo!();        
+        let base = 48;
+        let digits: Vec<u8> = s
+            .as_bytes()
+            .iter()
+            .filter(|c| c.is_ascii_digit())
+            .map(|c| *c - base)
+            .collect();
+        match digits.len().cmp(&13) {
+            Ordering::Less => return Err(IsbnError::TooShort),
+            Ordering::Greater => return Err(IsbnError::TooLong),
+            _ => (),
+        };
+
+        let actual = digits[11];
+        let expected = calculate_check_digit(&digits[0..12]);
+        if actual != expected {
+            return Err(IsbnError::InvalidCheckDigit);
+        }
+        Ok(Isbn {
+            raw: s.to_string(),
+            digits,
+        })
     }
 }
 
@@ -21,7 +50,13 @@ impl std::fmt::Display for Isbn {
 
 // https://en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-13_check_digit_calculation
 fn calculate_check_digit(digits: &[u8]) -> u8 {
-    todo!()
+    let mut odd = false;
+    let sum = digits.iter().fold(0, |acc, n| {
+        let r = (acc + if odd { n * 3 } else { *n }) % 10;
+        odd = !odd;
+        r
+    });
+    (10 - sum) % 10
 }
 
 fn main() {
