@@ -1,12 +1,9 @@
 #[allow(dead_code)]
 fn sum_with_missing(numbers: Vec<Option<i32>>) -> i32 {
     numbers.into_iter().fold(0, |acc, number| {
-        if let Some(val) = number {
-            acc + val
-        } else {
-            acc
-        }
+        acc + number.unwrap_or_default()
     })
+    // The official answer uses an alternative of using map then sum
 }
 
 fn main() {
