@@ -1,5 +1,12 @@
+use std::convert::TryInto;
+
+use chrono::NaiveDate;
+
 fn weeks_between(a: &str, b: &str) -> i32 {
-    todo!()
+    let date_a = NaiveDate::parse_from_str(a, "%Y-%m-%d").unwrap();
+    let date_b = NaiveDate::parse_from_str(b, "%Y-%m-%d").unwrap();
+    let diff = date_b - date_a;
+    diff.num_weeks().try_into().unwrap()
 }
 
 fn main() {
