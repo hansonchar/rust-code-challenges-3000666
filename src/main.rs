@@ -1,5 +1,12 @@
+#[allow(dead_code)]
 fn sum_with_missing(numbers: Vec<Option<i32>>) -> i32 {
-    todo!();
+    numbers.into_iter().fold(0, |acc, number| {
+        if let Some(val) = number {
+            acc + val
+        } else {
+            acc
+        }
+    })
 }
 
 fn main() {
