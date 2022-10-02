@@ -30,8 +30,6 @@ enum RgbError {
     MissingHashPrefix,
 }
 
-const BASE: i64 = 256;
-
 impl FromStr for Rgb {
     type Err = RgbError;
 
@@ -43,9 +41,9 @@ impl FromStr for Rgb {
         } else {
             let val = i64::from_str_radix(&s[1..7], 16).map_err(RgbError::ParseError)?;
             Ok(Rgb(
-                (val % BASE) as u8,
-                ((val / BASE) % BASE) as u8,
-                ((val / BASE / BASE) % BASE) as u8,
+                (val % 256) as u8,
+                ((val >> 8) % 256) as u8,
+                ((val >> 16) % 256) as u8,
             ))
         }
     }
