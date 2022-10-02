@@ -10,20 +10,24 @@ trait FileMetadata {
 
 impl FileMetadata for path::Path {
     fn is_readable(&self) -> bool {
-        todo!();
+        self.metadata().is_ok()
     }
 
     fn is_writeable(&self) -> bool {
-        todo!();
+        if let Ok(meta) = self.metadata() {
+            !meta.permissions().readonly()
+        } else {
+            false
+        }
     }
 
     fn exists(&self) -> bool {
-        todo!();
+        self.try_exists().is_ok()
     }
 }
 
 fn main() {
-    // 
+    //
 }
 
 #[test]
